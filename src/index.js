@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, fromUnixTime } from 'date-fns';
 
 const searchButton = document.querySelector('.search-button');
 const searchQueryInput = document.querySelector('.search-input');
@@ -10,6 +10,7 @@ searchButton.addEventListener('click', async (e) => {
 
   // HACK: Temporary display.
   mainContainer.innerHTML = '';
+  mainContainer.appendChild(headingRender(weatherData));
   mainContainer.appendChild(currentWeatherRender(weatherData));
   mainContainer.appendChild(currentWeatherDetails(weatherData));
   mainContainer.appendChild(weeklyForecastRender(weatherData));
@@ -19,6 +20,22 @@ async function getWeatherDataForLocation(location) {
   const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?unitGroup=metric&key=2RZ47MU2K54AF8SUFJKS2R4LZ&contentType=json`);
   const weatherData = await response.json();
   return weatherData;
+}
+
+function headingRender(weatherData) {
+  const element = document.createElement('header');
+  element.classList.add('heading');
+
+  const location = document.createElement('h1');
+  location.textContent = weatherData.resolvedAddress;
+
+  const date = document.createElement('span');
+  date.textContent = format(fromUnixTime(weatherData.currentConditions.datetimeEpoch), 'EEEE d MMMM y | HH:mm');
+
+  element.appendChild(location);
+  element.appendChild(date);
+
+  return element;
 }
 
 function currentWeatherRender(weatherData) {
