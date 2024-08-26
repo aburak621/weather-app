@@ -2,6 +2,7 @@ import headingRender from './headingRender';
 import currentWeatherRender from './currentWeatherRender';
 import currentWeatherDetailsRender from './currentWeatherDetailsRender';
 import weeklyForecastRender from './weeklyForecastRender';
+import './style.css';
 
 const searchButton = document.querySelector('.search-button');
 const searchQueryInput = document.querySelector('.search-input');
@@ -17,7 +18,12 @@ searchButton.addEventListener('click', async (e) => {
   mainContainer.appendChild(currentWeatherRender(weatherData));
   mainContainer.appendChild(currentWeatherDetailsRender(weatherData));
   mainContainer.appendChild(weeklyForecastRender(weatherData));
+  localStorage.setItem('mainContainerHTMLContent', mainContainer.innerHTML);
 });
+
+if (localStorage.getItem('mainContainerHTMLContent')) {
+  mainContainer.innerHTML = localStorage.getItem('mainContainerHTMLContent');
+}
 
 async function getWeatherDataForLocation(location) {
   const response = await fetch(

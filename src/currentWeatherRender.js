@@ -6,17 +6,20 @@ function currentWeatherRender(weatherData) {
   temp.textContent = `${Math.round(weatherData.currentConditions.temp)}°C`;
   temp.classList.add('current-weather-temp');
 
-  const conditions = document.createElement('span');
+  const data = document.createElement('div');
+  const conditions = document.createElement('p');
   conditions.textContent = weatherData.currentConditions.conditions;
   conditions.classList.add('current-weather-conditions');
 
-  const feelsLike = document.createElement('span');
+  const feelsLike = document.createElement('p');
   feelsLike.textContent = `Feels like ${Math.round(weatherData.currentConditions.feelslike)}°C`;
   feelsLike.classList.add('current-weather-feels-like');
 
+  data.appendChild(conditions);
+  data.appendChild(feelsLike);
+
   element.appendChild(temp);
-  element.appendChild(conditions);
-  element.appendChild(feelsLike);
+  element.appendChild(data);
 
   return element;
 }
